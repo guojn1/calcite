@@ -48,7 +48,7 @@ import static java.util.Objects.requireNonNull;
  * or schedule other tasks.</p>
  */
 @SuppressWarnings("JdkObsolete")
-class TopDownRuleDriver implements RuleDriver {
+public class TopDownRuleDriver implements RuleDriver {
 
   private static final Logger LOGGER = CalciteTrace.getPlannerTaskTracer();
 
@@ -77,6 +77,8 @@ class TopDownRuleDriver implements RuleDriver {
    * in another passThrough or derive.
    */
   private final Set<RelNode> passThroughCache = new HashSet<>();
+
+  public static Integer infiniteOptimize = 100000;
 
   //~ Constructors -----------------------------------------------------------
 
@@ -352,6 +354,9 @@ class TopDownRuleDriver implements RuleDriver {
         if (task != null) {
           tasks.add(task);
         }
+      }
+      if (tasks.size() > infiniteOptimize) {
+        throw new RuntimeException("infinite optimize");
       }
     }
 
